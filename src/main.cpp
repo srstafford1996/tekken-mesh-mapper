@@ -11,6 +11,8 @@
 
 #include "assetreader.hpp"
 
+std::string ASSET_DIR = "in";
+
 std::filesystem::path GetExecutablePath()
 {
     char buffer[1024];
@@ -20,7 +22,7 @@ std::filesystem::path GetExecutablePath()
 
 std::string GetRelativePath(std::filesystem::path p)
 {
-    std::string input = GetExecutablePath().parent_path().append("in").generic_string();
+    std::string input = GetExecutablePath().parent_path().append(ASSET_DIR).generic_string();
     std::string s = p.generic_string();
 
     return s.substr(input.size() + 1, std::string::npos);
@@ -97,6 +99,12 @@ int main(int argc, char *argv[])
             autoMappingEnabled = true;
             std::cout << "Automapping Enabled\n";
         }
+
+        if (strcmp("-d", argv[i]) == 0)
+        {
+            ASSET_DIR = argv[i+1];
+            std::cout << "Using custom directory: " << ASSET_DIR << std::endl;
+        }
     }
 
     std::map<std::string, std::filesystem::path> materialsMap;
@@ -104,7 +112,7 @@ int main(int argc, char *argv[])
 
     std::map<std::string, std::optional<std::filesystem::path>> autoMap;
 
-    std::filesystem::path input = GetExecutablePath().parent_path().append("in");
+    std::filesystem::path input = GetExecutablePath().parent_path().append(ASSET_DIR);
     
     // Find Mesh file to pack
     std::cout << "Select file to load: \n";
