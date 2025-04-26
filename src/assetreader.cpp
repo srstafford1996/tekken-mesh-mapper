@@ -328,5 +328,6 @@ std::map<std::string, std::string> ReadKeyValueFile(const std::filesystem::path 
         kvMap[key] = value;
     }
 
+    file.close();
     return kvMap;
 }
